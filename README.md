@@ -53,7 +53,7 @@ $ docker run -p 8501:8501 -v $(pwd)/secrets.toml:/s3_browser/.streamlit/secrets.
 * 运行
 
     ```bash
-    $ poetry run streamlit run s3_browser/index.py
+    $ poetry run streamlit run s3_browser/Welcome.py
     ```
 
 ### 作者
