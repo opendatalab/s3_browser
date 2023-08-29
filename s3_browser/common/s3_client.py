@@ -3,7 +3,7 @@ import re
 
 from typing import List, Union
 import streamlit as st
-from common import safe_get_query_value
+from s3_browser.common import safe_get_query_value
 
 
 __re_s3_path = re.compile("^s3a?://([^/]+)(?:/(.*))?$")

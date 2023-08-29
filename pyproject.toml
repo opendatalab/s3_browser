@@ -1,9 +1,13 @@
 [tool.poetry]
-name = "s3-browser"
-version = "0.1.0"
+name = "s3-browser-cli"
+version = "0.0.6"
 description = ""
-authors = ["Zhang Chaobin <zhangchaobin@sensetime.com>"]
+authors = ["Chaobin Zhang <zhchbin@gmail.com>"]
 readme = "README.md"
+packages = [
+    { include = "s3_browser" },
+    { include = "s3_browser_cli" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -12,6 +16,7 @@ watchdog = "^3.0.0"
 boto3 = "^1.28.32"
 humanize = "^4.8.0"
 streamlit-code-editor = "^0.1.8"
+click = "^8.1.7"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -22,10 +27,12 @@ name = "aliyun"
 url = "https://mirrors.aliyun.com/pypi/simple/"
 priority = "primary"
 
-
 [[tool.poetry.source]]
 name = "PyPI"
 priority = "primary"
+
+[tool.poetry.scripts]
+s3_browser = "s3_browser_cli.cli:main"
 
 [build-system]
 requires = ["poetry-core"]

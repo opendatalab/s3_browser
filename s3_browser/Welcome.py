@@ -1,5 +1,5 @@
 import streamlit as st
-from common.s3_client import get_s3_client_list
+from s3_browser.common.s3_client import get_s3_client_list
 
 st.set_page_config(page_title="Welcome to the s3_browser", layout="wide")
 

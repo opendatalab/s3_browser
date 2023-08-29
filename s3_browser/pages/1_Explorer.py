@@ -3,8 +3,8 @@ import humanize
 import os
 import json
 
-from common import query_text_input, safe_get_query_value
-from common.s3_client import get_s3_client
+from s3_browser.common import query_text_input, safe_get_query_value
+from s3_browser.common.s3_client import get_s3_client
 from code_editor import code_editor
 from typing import List
 from urllib.parse import quote
