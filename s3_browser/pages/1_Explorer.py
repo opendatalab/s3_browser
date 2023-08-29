@@ -329,13 +329,6 @@ def try_view_jsonl(text: str, read_size, size):
         # drop last line incase it is truncated.
         lines = lines[:-1]
 
-    info_texts = []
-    if read_size < size:
-        info_texts.append(f"Only read {read_size} bytes")
-
-    if info_texts:
-        st.info(", ".join(info_texts) + ".")
-
     if "jsonl_page_index" not in st.session_state:
         st.session_state.jsonl_page_index = 0
 
@@ -382,6 +375,10 @@ def try_view_text_file(s3_path: str, head_resp):
     if not len(text):
         st.info("File is empty.")
         st.stop()
+
+    if read_size < size:
+        info_texts = f"Only read {read_size} bytes."
+        st.info(info_texts)
 
     extension_to_language = {
         (".md"): "markdown",
