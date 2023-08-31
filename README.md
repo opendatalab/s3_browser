@@ -43,7 +43,7 @@ ENDPOINT_URL = "<Your S3 Endpoint Url>"
 启动服务 - docker启动
 
 ```bash
-$ docker run -p 8501:8501 -v $(pwd)/secrets.toml:/s3_browser/.streamlit/secrets.toml zhchbin/s3_browser:v0.0.5
+$ docker run -p 8501:8501 -v $(pwd)/secrets.toml:/s3_browser/.streamlit/secrets.toml zhchbin/s3_browser:latest
 ```
 
 在浏览器中访问：`http://127.0.0.1:8501`
