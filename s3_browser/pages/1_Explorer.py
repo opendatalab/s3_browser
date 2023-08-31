@@ -84,12 +84,17 @@ def write_item(l1, l2, l3, path, download_path=None):
     download_link = ""
     if download_path:
         download_link = f'[<a href="{download_path}">↓</a>]'
+
+    def truncate(data):
+        info = (data[:12] + '..') if len(data) > 12 else data
+        return info
+
     st.markdown(
         f"""
         <pre>
             <span style='display: inline-block; width: 150px;'>{l1}</span>
             <span style='display: inline-block; width: 120px;'>{l2}</span>
-            <span style='display: inline-block; width: 130px;'>{l3}</span>
+            <span style='display: inline-block; width: 130px;'>{truncate(l3)}</span>
             <a href="/Explorer?current_s3={current_s3}&s3_path={path}" target = "_self">{path}</a>
             {download_link}
         </pre>
@@ -253,7 +258,7 @@ def list_dir(s3_path):
             return
 
         objects = list_objects_with_cache(s3_path, max_count)
-        item_count = len([path for path, _ in objects if path.endswith("/")])
+        item_count = len([path for path, _ in objects if not path.endswith("/")])
 
         if item_count == max_count:
             st.info(f"Only show {max_count} items.")
