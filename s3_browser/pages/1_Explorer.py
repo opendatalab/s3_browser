@@ -86,7 +86,7 @@ def write_item(l1, l2, l3, path, download_path=None):
         download_link = f'[<a href="{download_path}">↓</a>]'
 
     def truncate(data):
-        info = (data[:12] + '..') if len(data) > 12 else data
+        info = (data[:12] + "..") if len(data) > 12 else data
         return info
 
     st.markdown(
