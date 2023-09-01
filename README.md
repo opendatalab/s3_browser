@@ -2,6 +2,11 @@
 
 基于Streamlit开发，可在线查看S3存储内容的工具。
 
+
+[DEMO](https://github.com/opendatalab/s3_browser/assets/1787294/18dbc19a-e998-407b-a5d0-031144e97069)
+
+
+
 ### 特性
 
 * 文件夹/文件浏览
