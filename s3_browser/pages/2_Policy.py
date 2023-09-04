@@ -1,5 +1,5 @@
 import streamlit as st
-from common.s3_client import get_s3_client
+from s3_browser.common.s3_client import get_s3_client
 
 st.set_page_config(page_title="Bucket Policy", page_icon="", layout="wide")
 
