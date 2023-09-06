@@ -6,7 +6,6 @@
 [DEMO](https://github.com/opendatalab/s3_browser/assets/1787294/18dbc19a-e998-407b-a5d0-031144e97069)
 
 
-
 ### 特性
 
 * 文件夹/文件浏览
@@ -18,9 +17,13 @@
 
 注：对象存储没有文件夹概念，仅为模拟文件系统方式进行查看。出于性能考虑，一个文件夹仅支持查看前1000个文件。
 
+[![Supported Versions](https://img.shields.io/pypi/pyversions/s3_browser_cli.svg)](https://pypi.org/project/s3-browser-cli/)
+
 ### 使用
 
-编写配置文件`secrets.toml`，多套S3服务配置
+在HOME目录下编写配置文件`~/.streamlit/secrets.toml`
+
+多套S3 AK/SK配置
 
 ```toml
 [S3_Servers]
@@ -45,15 +48,7 @@ SK = "<Your S3 SK>"
 ENDPOINT_URL = "<Your S3 Endpoint Url>"
 ```
 
-启动服务 - docker启动
-
-```bash
-$ docker run -p 8501:8501 -v $(pwd)/secrets.toml:/s3_browser/.streamlit/secrets.toml zhchbin/s3_browser:latest
-```
-
-在浏览器中访问：`http://127.0.0.1:8501`
-
-您也可以使用pip进行安装，`secrets.toml` 配置文件需要存放在当前运行目录`.streamlit/secrets.toml`或者HOME目录下`~/.streamlit/secrets.toml`
+使用pip进行安装，启动服务
 
 ```bash
 $ pip install s3-browser-cli
@@ -65,7 +60,26 @@ Options:
   -p, --port INTEGER  Specify alternate port [default: 8501]
   -a, --address TEXT  specify alternate bind address (default: 127.0.0.1)
   --help              Show this message and exit.
+
+$ s3_browser
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://127.0.0.1:8501
+  
 ```
+
+注：`secrets.toml` 配置文件也可以存放在命令s3_browser运行目录下`.streamlit/secrets.toml`
+
+Python版本依赖：`^3.10`
+
+你也可以使用docker启动服务
+
+```bash
+$ docker run -p 8501:8501 -v $HOME/.streamlit/secrets.toml:/s3_browser/.streamlit/secrets.toml zhchbin/s3_browser:latest
+```
+
+在浏览器中访问：`http://127.0.0.1:8501`
 
 ### 源码运行/开发
 
