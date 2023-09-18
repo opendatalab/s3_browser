@@ -89,14 +89,19 @@ def write_item(l1, l2, l3, path, download_path=None):
         info = (data[:12] + "..") if len(data) > 12 else data
         return info
 
+    next_link = ""
+    if path.endswith(".pdf"):
+        next_link = f'<a href="{download_path}" target = "_blank">{path}</a>'
+    else:
+        next_link = f'<a href="/Explorer?current_s3={current_s3}&s3_path={path}" target = "_self">{path}</a>{download_link}'
+
     st.markdown(
         f"""
         <pre>
             <span style='display: inline-block; width: 150px;'>{l1}</span>
             <span style='display: inline-block; width: 120px;'>{l2}</span>
             <span style='display: inline-block; width: 130px;'>{truncate(l3)}</span>
-            <a href="/Explorer?current_s3={current_s3}&s3_path={path}" target = "_self">{path}</a>
-            {download_link}
+            {next_link}
         </pre>
         """,
         unsafe_allow_html=True,

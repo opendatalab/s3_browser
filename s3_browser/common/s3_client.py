@@ -1,5 +1,6 @@
 import boto3
 import re
+import os
 
 from typing import List, Union
 import streamlit as st
@@ -86,11 +87,14 @@ class S3Client:
         except Exception:
             return None
 
-    def generate_presigned_url(self, s3_path: str) -> str:
+    def generate_presigned_url(self, s3_path: str, force_download=False) -> str:
         bucket, key = split_s3_path(s3_path)
-        return self.cli.generate_presigned_url(
-            "get_object", {"Bucket": bucket, "Key": key}
-        )
+        params = {"Bucket": bucket, "Key": key}
+        if key.lower().endswith(".pdf"):
+            params["ResponseContentType"] = "application/pdf"
+        if force_download:
+            params["ResponseContentDisposition"] = f'attachment; filename="{os.path.basename(key)}"'
+        return self.cli.generate_presigned_url("get_object", params)
 
     def read_object(self, s3_path, bytes: Union[str, None] = None):
         __re_bytes = re.compile("^([0-9]+)([,-])([0-9]+)$")
