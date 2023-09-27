@@ -415,12 +415,21 @@ def try_view_text_file(s3_path: str, head_resp):
         try_view_jsonl(text, read_size, size)
 
 
+def try_view_audio(s3_path: str):
+    audio_ext = (".mp3", ".m4a", ".amr", ".flac", ".oga", ".ogg", ".wav")
+    if s3_path.lower().endswith(audio_ext):
+        url = get_s3_client().generate_presigned_url(s3_path)
+        st.audio(url)
+        st.stop()
+
+
 def show_file(s3_path):
     head_resp = get_s3_client().head_object(s3_path)
     write_object(head_resp, s3_path)
 
     # will st.stop if viewable
     try_view_img_or_video(s3_path)
+    try_view_audio(s3_path)
     try_view_text_file(s3_path, head_resp)
 
 
