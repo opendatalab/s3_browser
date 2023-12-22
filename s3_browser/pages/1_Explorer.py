@@ -164,7 +164,7 @@ def write_object(obj, path):
 write_parent(get_parent(s3_path))
 
 
-@st.cache_data(ttl="2h")
+@st.cache_data(ttl="1m")
 def list_objects_with_cache(s3_path, max_count):
     return list(get_s3_client().list_objects(s3_path, max_count=max_count))
 
