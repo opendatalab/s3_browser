@@ -170,13 +170,13 @@ def list_objects_with_cache(s3_path, max_count):
 
 
 def pagination(key: str, max_len: int, page_size=6) -> int:
-    col1, col2, col3, col4, col5 = st.columns([1, 7, 1, 0.5, 1])
-    col4.markdown(
-        f"<div style='text-align: center; height: 40px; line-height: 40px;'>Size:</div>",
+    col1, col2, col3, col4, col5 = st.columns([1, 7, 1, 1, 0.5])
+    col5.markdown(
+        f"<div style='text-align: center; height: 40px; line-height: 40px;'>条/页</div>",
         unsafe_allow_html=True,
     )
 
-    page_size = col5.number_input(
+    page_size = col4.number_input(
         "Page Size",
         min_value=1,
         max_value=16,
@@ -205,13 +205,13 @@ def pagination(key: str, max_len: int, page_size=6) -> int:
                 st.session_state[key] = total_page - 1
 
     if st.session_state[key] != 0:
-        col1.button("Previous", on_click=lambda: move_index(prev=True))
+        col1.button("上一页", on_click=lambda: move_index(prev=True))
     col2.markdown(
         f"<div style='text-align: center; height: 40px; line-height: 40px;'>{st.session_state[key] + 1}/{total_page}</div>",
         unsafe_allow_html=True,
     )
     if st.session_state[key] != max_len - 1:
-        col3.button("Next", on_click=lambda: move_index())
+        col3.button("下一页", on_click=lambda: move_index())
     return page_size
 
 
@@ -327,8 +327,8 @@ def try_view_img_or_video(s3_path: str):
 
 
 @st.cache_data(ttl="2h")
-def read_file_content(s3_path, read_size):
-    obj_body = get_s3_client().read_object(s3_path, f"0,{read_size}")
+def read_file_content(s3_path, read_size, offset=0):
+    obj_body = get_s3_client().read_object(s3_path, f"{offset},{read_size}")
     content: bytes = obj_body.read()
     return content
 
@@ -357,9 +357,19 @@ def try_view_jsonl(text: str, read_size, size):
         if i >= len(formatted_lines):
             continue
 
-        st.write(f"### Line {i+1}")
         st.json(formatted_lines[i])
     st.stop()
+
+
+def offset_field(label, size, read_size):
+    c1, c2, c3, _ = st.columns([1, 4, 4, 8])
+    c1.markdown(label)
+    offset = c2.number_input("", min_value=0, key=label,
+        max_value=size, step=read_size, label_visibility="collapsed")
+    c3.markdown(
+        f"文件读取范围: {offset}-{offset+read_size} bytes."
+    )
+    return offset
 
 
 def try_view_text_file(s3_path: str, head_resp):
@@ -369,13 +379,9 @@ def try_view_text_file(s3_path: str, head_resp):
         st.info("File is empty.")
         st.stop()
 
+    offset = offset_field("起始位置", size, read_size)
     with st.spinner("Reading..."):
-        with st.columns([1, 5, 1])[2]:
-            st.button(
-                "Clear cached content", on_click=lambda: read_file_content.clear()
-            )
-        content: bytes = read_file_content(s3_path, read_size)
-
+        content: bytes = read_file_content(s3_path, read_size, offset)
         try:
             text = content.decode("utf-8", errors="ignore")
         except Exception as e:
@@ -385,10 +391,6 @@ def try_view_text_file(s3_path: str, head_resp):
     if not len(text):
         st.info("File is empty.")
         st.stop()
-
-    if read_size < size:
-        info_texts = f"Only read {read_size} bytes."
-        st.info(info_texts)
 
     extension_to_language = {
         (".md"): "markdown",

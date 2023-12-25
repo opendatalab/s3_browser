@@ -3,7 +3,7 @@ from s3_browser.common.s3_client import get_s3_client_list
 
 st.set_page_config(page_title="Welcome to the s3_browser", layout="wide")
 
-st.markdown("## Welcome to the s3_browser")
+st.markdown("## 欢迎使用S3 Browser")
 
 s3_client_list = get_s3_client_list()
 selected_index = 0
@@ -16,6 +16,6 @@ if current_s3:
             break
 
 selected_s3 = st.selectbox(
-    "Current S3 config", options=s3_client_list, index=selected_index
+    "当前选择的S3集群", options=[cli["name"] for cli in s3_client_list], index=selected_index
 )
-st.experimental_set_query_params(**{"current_s3": selected_s3["name"]})
+st.experimental_set_query_params(**{"current_s3": selected_s3})
