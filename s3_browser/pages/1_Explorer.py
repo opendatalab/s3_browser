@@ -93,7 +93,7 @@ def write_item(l1, l2, l3, path, download_path=None):
     if path.endswith(".pdf"):
         next_link = f'<a href="{download_path}" target = "_blank">{path}</a>'
     else:
-        next_link = f'<a href="/Explorer?current_s3={current_s3}&s3_path={path}" target = "_self">{path}</a>{download_link}'
+        next_link = f'<a href="/Explorer?current_s3={current_s3}&s3_path={path}" target = "_self" style="line-break:anywhere">{path}</a>{download_link}'
 
     st.markdown(
         f"""
@@ -362,12 +362,13 @@ def try_view_jsonl(text: str, read_size, size):
 
 
 def offset_field(label, size, read_size):
-    c1, c2, c3, _ = st.columns([1, 4, 4, 8])
-    c1.markdown(label)
+    c1, c2, c3 = st.columns([1.6, 4, 12])
+    c1.markdown(f'<p style="margin-top:8px">文件读取范围：</p>', unsafe_allow_html=True)
     offset = c2.number_input("", min_value=0, key=label,
         max_value=size, step=read_size, label_visibility="collapsed")
     c3.markdown(
-        f"文件读取范围: {offset}-{offset+read_size} bytes."
+        f'<p style="margin-top:8px"> - {offset+read_size} bytes.</p>',
+        unsafe_allow_html=True,
     )
     return offset
 
